@@ -1,9 +1,28 @@
 # Expense Manager
 
-Laravel + React を使用した経費管理アプリケーション
+Laravel + React を使用した経費管理アプリケーション + Claude AI PR Review Bot
 
 ## アプリケーションURL
 https://dev.expense-manager.com/
+
+## 主な機能
+
+### 経費管理
+- 経費の登録・編集・削除
+- カテゴリ管理
+- REST API
+
+### 🤖 Claude AI PR Review Bot
+- **自動コードレビュー**: PRが作成/更新されると自動的にレビュー
+- **セキュリティ重視**: 機密情報を自動マスキング
+- **包括的な分析**: コード品質、セキュリティ、パフォーマンスなどを評価
+- **詳細**: [PR_BOT_SETUP.md](PR_BOT_SETUP.md) を参照
+
+### 🚀 PR作成コマンド
+- **コマンドラインからPR作成**: `pr:create` コマンドでGitHub PRを作成
+- **自動説明文生成**: コミット履歴から自動的にPR説明を生成
+- **ドラフトPR対応**: 作業中の変更をドラフトとして共有
+- **詳細**: [PR_COMMAND_USAGE.md](PR_COMMAND_USAGE.md) を参照
 
 ## 技術スタック
 
@@ -12,6 +31,8 @@ https://dev.expense-manager.com/
 - PHP 7.4
 - MySQL 8.0
 - REST API
+- Claude AI API (Anthropic)
+- GitHub API
 
 ### Frontend
 - React
@@ -89,6 +110,54 @@ docker-compose exec backend php artisan migrate
 - `GET /api/categories/{id}` - 特定のカテゴリを取得
 - `PUT /api/categories/{id}` - カテゴリを更新
 - `DELETE /api/categories/{id}` - カテゴリを削除
+
+### Webhooks
+- `POST /api/webhooks/github/pr` - GitHub PR Webhook (PR Review Bot用)
+
+## コマンド
+
+### PR作成コマンド
+
+#### Claude Code スラッシュコマンド (最も簡単)
+Claude Code内で直接使用:
+
+```
+/create-pr
+/create-pr --title="Add new feature"
+/create-pr --base=develop
+/create-pr --draft
+```
+
+**特徴:**
+- ✅ Claude Code内でスラッシュコマンドとして使用可能
+- ✅ 最短コマンド (docker-compose不要)
+- ✅ タイトル自動生成（ブランチ名から）
+- ✅ 説明文自動生成（コミット履歴から）
+
+#### ターミナルコマンド (シンプル版)
+現在のブランチから即座にPRを作成:
+
+```bash
+# 最もシンプルな使い方（タイトルはブランチ名から自動生成）
+docker-compose exec backend php artisan pr
+
+# タイトルを指定
+docker-compose exec backend php artisan pr --title="Add new feature"
+
+# ベースブランチを指定
+docker-compose exec backend php artisan pr --base=develop
+
+# ドラフトPR
+docker-compose exec backend php artisan pr --draft
+```
+
+**特徴:**
+- ✅ タイトル自動生成（ブランチ名から）
+- ✅ 説明文自動生成（コミット履歴から）
+- ✅ 現在のブランチを自動検出
+- ✅ オプション最小限で使いやすい
+
+詳細は [PR_QUICK_COMMAND.md](PR_QUICK_COMMAND.md) を参照
 
 ## 開発
 

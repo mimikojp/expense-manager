@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('expenses', 'Api\ExpenseController');
 Route::apiResource('categories', 'Api\CategoryController');
 
+// GitHub Webhook for PR Review Bot
+Route::post('/webhooks/github/pr', 'Api\WebhookController@handlePullRequest');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
