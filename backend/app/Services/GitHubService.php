@@ -18,12 +18,17 @@ class GitHubService
     /**
      * Verify GitHub webhook signature
      */
-    public function verifyWebhookSignature(string $payload, string $signature): bool
+    public function verifyWebhookSignature(string $payload, ?string $signature): bool
     {
         $secret = env('GITHUB_WEBHOOK_SECRET');
 
         if (!$secret) {
             Log::warning('GitHub webhook secret not configured');
+            return false;
+        }
+
+        if (!$signature) {
+            Log::warning('No webhook signature provided');
             return false;
         }
 
